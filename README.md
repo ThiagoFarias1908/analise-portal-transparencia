@@ -1,5 +1,11 @@
 # ✈️ Análise de Gastos com Viagens - Portal da Transparência
 
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas">
+  <img src="https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge&logo=matplotlib&logoColor=white" alt="Matplotlib">
+</p>
+
 ## 📌 Sobre o Projeto
 
 Este projeto tem como objetivo realizar uma Análise Exploratória de Dados (EDA) focada nas despesas de viagens governamentais, utilizando bases de dados abertas do **Portal da Transparência do Governo Federal Brasileiro**.

@@ -1,60 +1,65 @@
-# ✈️ Análise de Gastos com Viagens - Portal da Transparência
+# ✈️ EDA: Análise de Despesas de Viagens Governamentais
 
 <p align="left">
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas">
   <img src="https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge&logo=matplotlib&logoColor=white" alt="Matplotlib">
+  <img src="https://img.shields.io/badge/Jupyter-F37626.svg?&style=for-the-badge&logo=Jupyter&logoColor=white" alt="Jupyter">
 </p>
 
-## 📌 Sobre o Projeto
+> **Objetivo:** Auditar e extrair inteligência de dados a partir do histórico de viagens abertas do Governo Federal (Portal da Transparência), mapeando a correlação entre cargos públicos e a média de despesas geradas.
 
-Este projeto tem como objetivo realizar uma Análise Exploratória de Dados (EDA) focada nas despesas de viagens governamentais, utilizando bases de dados abertas do **Portal da Transparência do Governo Federal Brasileiro**.
+## 📈 Visualização de Alto Impacto
 
-Através do processamento de dados e engenharia de recursos (feature engineering), o projeto extrai insights valiosos sobre o comportamento de gastos, duração de viagens e distribuição de recursos por cargos.
+![Despesa média em viagens por cargo público (2025)](output/grafico_2025.png)
 
-## 🛠️ Tecnologias Utilizadas
+## ⚙️ Desafios Técnicos e Metodologia (ETL e Análise)
 
-* **Python:** Linguagem principal para manipulação de dados.
-* **Pandas:** Utilizado para importação (lidando com encoding `Windows-1252`, separadores e padrões de decimais brasileiros), limpeza e agregação de dados.
-* **Matplotlib:** Utilizado para a criação de visualizações customizadas e de alto impacto visual (estilo *dashboard*).
+O trabalho com bases de dados abertas governamentais exige rigorosas etapas de limpeza (ETL) e engenharia de *features*. Este projeto (desenvolvido em Jupyter Notebook) seguiu a seguinte arquitetura de dados:
 
-## 📊 Principais Etapas e Análises
+1.  **Tratamento de Dados Regionais:** Resolução de inconsistências de importação do `pd.read_csv`, especificando *encoding* (`Windows-1252`), separadores e o padrão brasileiro de decimais (vírgula) para evitar a quebra de tipos numéricos.
+2.  **Feature Engineering (Criação de Variáveis):**
+    *   Criação da métrica financeira unificada `Despesas` (somando diárias, passagens e outros gastos).
+    *   Derivação de dimensões temporais (`Mês da viagem` e `Dias de viagem`), processando a diferença absoluta de dias entre datas de ida e volta (`pd.to_datetime`).
+3.  **Agregações Lógicas:** Uso intensivo do método `.agg()` no Pandas para gerar uma tabela consolidada simultânea, cruzando média de dias, despesa total, destino modal (mais frequente) e volume de viagens, tudo agrupado por `Cargo`.
+4.  **Filtros Estatísticos de Relevância:** Aplicação de um filtro na base (isolando cargos que representam **>1% do volume total de viagens**) para eliminar *outliers* ruidosos e focar a visualização nos dados mais representativos para a administração pública.
+5.  **Dataviz (Exportação):** Criação de um gráfico de barras horizontais utilizando `matplotlib`, estilizado sob uma paleta *dark* personalizada para leitura facilitada e exportado para compor painéis gerenciais.
 
-1. **Coleta e Tratamento:** Importação do arquivo CSV nativo do Portal da Transparência, adequando formatações regionais para evitar perda de integridade numérica e textual.
-2. **Engenharia de Features:**
-* Criação de novas métricas, como `Mês da viagem` e `Dias de viagem`, calculadas a partir das datas de início e término.
-* Consolidação da coluna `Despesas`.
+## 📁 Estrutura de Diretórios
 
+O *pipeline* de dados exige uma estrutura de pastas organizada para a correta entrada e saída de arquivos gerados (Tabelas Excel e PNGs).
 
-3. **Agrupamento e Estatísticas:** Geração de uma tabela consolidada utilizando `.agg()` para extrair múltiplas métricas simultâneas (média, soma, moda, contagem) por diferentes variáveis.
-4. **Filtragem de Relevância:** Aplicação de filtros estatísticos (foco em cargos que representam mais de 1% do volume de viagens) para reduzir ruídos e focar nos dados mais expressivos.
-5. **Visualização de Dados:** Construção de gráficos de barras horizontais altamente customizados (paleta dark com destaque em `#49deac`), facilitando a leitura e a tomada de decisão.
+```text
+analise-portal-transparencia/
+│
+├── data/
+│   └── 2025_Viagem.csv            # Dataset bruto de origem (Exemplo)
+├── output/
+│   ├── tabela_2025.xlsx           # Tabela filtrada agregada gerada pelo script
+│   └── grafico_2025.png           # Visualização final gerada pelo matplotlib
+│
+├── EDA_Gastos_Governo.ipynb       # Notebook principal com o código de limpeza e EDA
+├── requirements.txt               # Dependências do projeto (pandas, matplotlib)
+└── README.md
+
+```
 
 ## 🚀 Como Executar o Projeto
 
-1. Clone este repositório:
+Caso queira reproduzir as etapas de limpeza e geração do gráfico:
+
+1. Clone este repositório e instale as dependências:
 ```bash
-git clone https://github.com/ThiagoFarias1908/analise-portal-transparencia.git
+pip install pandas matplotlib openpyxl
 
 ```
 
 
-2. Instale as dependências necessárias:
-```bash
-pip install pandas matplotlib
-
-```
-
-
-3. Baixe a base de dados do [Portal da Transparência](https://portaldatransparencia.gov.br/) e coloque-a na mesma pasta do script (ou altere o caminho no código).
-4. Execute o Jupyter Notebook ou o script Python em sua IDE de preferência, lembrando de rodar as células na ordem correta (primeiro a importação e tratamento, seguido do agrupamento e visualização).
-
-## 💡 Próximos Passos (To-Do)
-
-* [ ] Analisar a sazonalidade dos gastos (meses com maior volume de despesas).
-* [ ] Mapear os destinos mais frequentes e com maior custo.
-* [ ] Criar funções automatizadas para gerar o relatório mensalmente.
+2. Faça o download do histórico de viagens do ano correspondente no [Portal da Transparência](https://portaldatransparencia.gov.br/) e coloque-o na pasta `data/`.
+3. Abra o Jupyter Notebook `EDA_Gastos_Governo.ipynb`.
+4. Altere a variável `ano` na primeira célula de código para refletir o ano do arquivo baixado.
+5. Execute todas as células. O script automaticamente limpará os dados, aplicará os filtros estatísticos e despejará a tabela Excel e o gráfico `.png` final na pasta `output/`.
 
 ---
 
-*Desenvolvido com dedicação para aprimorar habilidades em Análise de Dados.*
+**Autor:** [Thiago Farias Lourenço](https://www.linkedin.com/in/thiagofarias1908/)

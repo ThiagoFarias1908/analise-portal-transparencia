@@ -33,32 +33,40 @@ O *pipeline* de dados exige uma estrutura de pastas organizada para a correta en
 analise-portal-transparencia/
 │
 ├── data/
-│   └── 2025_Viagem.csv            # Dataset bruto de origem (Exemplo)
+│   └── amostra_viagens.csv        # Amostra reduzida (5 mil linhas) para testes
 ├── output/
 │   ├── tabela_2025.xlsx           # Tabela filtrada agregada gerada pelo script
 │   └── grafico_2025.png           # Visualização final gerada pelo matplotlib
 │
 ├── EDA_Gastos_Governo.ipynb       # Notebook principal com o código de limpeza e EDA
-├── requirements.txt               # Dependências do projeto (pandas, matplotlib)
+├── requirements.txt               # Dependências do projeto (pandas, matplotlib, openpyxl)
 └── README.md
 
 ```
 
 ## 🚀 Como Executar o Projeto
 
-Caso queira reproduzir as etapas de limpeza e geração do gráfico:
+Para garantir a reprodutibilidade rápida por recrutadores e gestores, o repositório já acompanha uma amostra tratada de 5.000 linhas (`amostra_viagens.csv`).
 
-1. Clone este repositório e instale as dependências:
+1. Clone este repositório e instale as dependências em seu ambiente virtual:
 ```bash
-pip install pandas matplotlib openpyxl
+git clone [https://github.com/ThiagoFarias1908/analise-portal-transparencia.git](https://github.com/ThiagoFarias1908/analise-portal-transparencia.git)
+cd analise-portal-transparencia
+pip install -r requirements.txt
 
 ```
 
 
-2. Faça o download do histórico de viagens do ano correspondente no [Portal da Transparência](https://portaldatransparencia.gov.br/) e coloque-o na pasta `data/`.
-3. Abra o Jupyter Notebook `EDA_Gastos_Governo.ipynb`.
-4. Altere a variável `ano` na primeira célula de código para refletir o ano do arquivo baixado.
-5. Execute todas as células. O script automaticamente limpará os dados, aplicará os filtros estatísticos e despejará a tabela Excel e o gráfico `.png` final na pasta `output/`.
+2. Abra o `EDA_Gastos_Governo.ipynb` no Jupyter Notebook ou em sua IDE (como VS Code).
+3. Execute todas as células. O script lerá a amostra local e gerará as tabelas e gráficos na pasta `output/`.
+
+> **⚠️ Atenção:** Os gráficos exibidos neste README foram gerados utilizando a base oficial completa (que excede o limite de tamanho do GitHub). Se desejar replicar os resultados exatos do ano, faça o download do histórico completo no [Portal da Transparência](https://portaldatransparencia.gov.br/), coloque o arquivo na pasta `data/` e altere o caminho de leitura na primeira célula do notebook.
+
+## 💡 Roadmap de Evolução
+
+* [ ] Incorporar análise geoespacial (mapa de calor) dos destinos mais caros.
+* [ ] Implementar modelo preditivo de série temporal para prever gastos no próximo trimestre.
+* [ ] Migrar as visualizações estáticas para um Dashboard interativo em Streamlit.
 
 ---
 
